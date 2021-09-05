@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WhitelistCompanion.Attributes;
+using WhitelistCompanion.Models;
 using WhitelistCompanion.Services;
 
 namespace WhitelistCompanion.Controllers
@@ -24,15 +22,33 @@ namespace WhitelistCompanion.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<string>> GetWhitelistAsync()
+        public async Task<ApiResponse<WhitelistListResponse>> GetWhitelistAsync()
         {
-            return await _rconService.GetWhitelist();
+            var result = await _rconService.GetWhitelist();
+
+            return new ApiResponse<WhitelistListResponse>
+            {
+                Data = new WhitelistListResponse
+                {
+                    Users = result.Users
+                }
+            };
+
         }
 
         [HttpPost]
-        public async Task<bool> AddUsernameToWhitelist(string username)
+        public async Task<ApiResponse<WhitelistAddResponse>> AddToWhitelistAsync([FromBody] WhitelistAddRequest whitelistAddRequest)
         {
-            return await _rconService.AddToWhitelist(username);
+            var result = await _rconService.AddToWhitelist(whitelistAddRequest.User);
+
+            return new ApiResponse<WhitelistAddResponse>
+            {
+                Data = new WhitelistAddResponse
+                {
+                    Success = result.Success,
+                    User = result.User
+                }
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -17,22 +18,23 @@ namespace WhitelistCompanion.Attributes
             {
                 context.Result = new ContentResult()
                 {
+                    ContentType = "application/json",
                     StatusCode = 401,
-                    Content = "Api Key was not provided"
+                    Content = $"{{ \"success\": false, \"error\": \"{APIKEYNAME} was not provided\" }}"
                 };
                 return;
             }
 
-            //var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-
-            var apiKey = "YoloSwag1337"; //appSettings.GetValue<string>(APIKEYNAME);
+            var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+            var apiKey = appSettings.GetValue<string>(APIKEYNAME);
 
             if (!apiKey.Equals(extractedApiKey))
             {
                 context.Result = new ContentResult()
                 {
+                    ContentType = "application/json",
                     StatusCode = 401,
-                    Content = "Api Key invalid"
+                    Content = $"{{ \"success\": false, \"error\": \"{APIKEYNAME} invalid\" }}"
                 };
                 return;
             }

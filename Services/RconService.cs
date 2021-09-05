@@ -2,44 +2,61 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using CoreRCON;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using WhitelistCompanion.Models;
+using WhitelistCompanion.Models.Rcon;
 
 namespace WhitelistCompanion.Services
 {
     public class RconService
     {
-        private static async Task<RCON> GetRconClientAsync()
+        private readonly ILogger<RconService> _logger;
+        private readonly IConfiguration _config;
+
+        private readonly string _host;
+        private readonly ushort _port;
+        private readonly string _password;
+
+        public RconService(ILogger<RconService> logger, IConfiguration config)
         {
-            var ip = (await Dns.GetHostAddressesAsync("localhost")).First();
-            var rcon = new RCON(ip, 27015, "YoloSwag1337");
+            _logger = logger;
+            _config = config;
+
+            _host = _config.GetValue<string>("MC_HOST");
+            _port = _config.GetValue<ushort>("MC_PORT");
+            _password = _config.GetValue<string>("MC_PASSWORD");
+
+            _logger.LogInformation($"Using {_host}:{_port} for RCON connections");
+        }
+        private async Task<RCON> GetRconClientAsync()
+        {
+            var ip = (await Dns.GetHostAddressesAsync(_host)).First();
+            var rcon = new RCON(ip, _port, _password);
             await rcon.ConnectAsync();
 
             return rcon;
         }
 
-        public async Task<bool> AddToWhitelist(string username)
+        public async Task<WhitelistAddCommandResponse> AddToWhitelist(string username)
         {
-            if (string.IsNullOrEmpty(username)) return false;
+            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
 
             var rcon = await GetRconClientAsync();
-            var result = await rcon.SendCommandAsync($"whitelist add {username}");
+            var result = await rcon.SendCommandAsync<WhitelistAddCommandResponse>($"whitelist add {username}");
 
-            if (string.IsNullOrEmpty(result)) return false;
-
-            return true;
+            return result;
         }
 
-        public async Task<IEnumerable<string>> GetWhitelist()
+        public async Task<WhitelistListCommandResponse> GetWhitelist()
         {
             var rcon = await GetRconClientAsync();
-            var result = await rcon.SendCommandAsync("whitelist list");
+            var result = await rcon.SendCommandAsync<WhitelistListCommandResponse>("whitelist list");
 
-            if (string.IsNullOrEmpty(result)) throw new Exception("Whitelist result is empty");
-
-            var usernames = result.Split(":")[0].Split(",");
-
-            return usernames;
+            return result;
         }
     }
 }
