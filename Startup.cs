@@ -58,10 +58,9 @@ namespace WhitelistCompanion
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "Web";
-
                 if (env.IsDevelopment())
                 {
+                    spa.Options.SourcePath = "Web";
                     spa.Options.DevServerPort = 3000;
                     spa.UseReactDevelopmentServer("dev");
                 }

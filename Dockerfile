@@ -10,6 +10,8 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
 WORKDIR /src
 COPY ["WhitelistCompanion.csproj", "./"]
 RUN dotnet restore "WhitelistCompanion.csproj"
