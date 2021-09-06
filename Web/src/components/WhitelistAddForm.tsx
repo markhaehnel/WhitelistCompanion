@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { postWhitelist } from "../api";
 
@@ -8,12 +8,18 @@ export function WhitelistAddForm() {
     const queryClient = useQueryClient();
     const mutation = useMutation(postWhitelist);
     const [user, setUser] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null);
 
     async function addToWhitelist() {
         await mutation.mutateAsync(user);
         queryClient.invalidateQueries();
         setUser("");
+        inputRef?.current?.focus();
     }
+
+    useEffect(() => {
+        inputRef?.current?.focus();
+    });
 
     return (
         <Card>
@@ -30,6 +36,7 @@ export function WhitelistAddForm() {
                     }}
                     type="text"
                     placeholder="Nickname"
+                    ref={inputRef}
                     disabled={mutation.isLoading}
                     autoFocus
                     className="text-lg p-2 rounded-md outline-none bg-gray-100 border-gray-300 border-2 transition-all focus:border-gray-600 focus:shadow-lg disabled:text-gray-600"
