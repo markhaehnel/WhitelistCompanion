@@ -12,7 +12,7 @@ export function Card({
 
     return (
         <div
-            className={`flex flex-col ${bgColor} ${fontColor} rounded-lg shadow-lg w-[512px]`}
+            className={`flex flex-col ${bgColor} ${fontColor} rounded-lg shadow-lg max-w-full w-[512px]`}
         >
             {children}
         </div>

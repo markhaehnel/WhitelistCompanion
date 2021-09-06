@@ -13,8 +13,8 @@ function App() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="flex-row h-screen bg-blue-500">
-                <div className="flex flex-col h-screen items-center justify-center gap-8">
+            <div className="flex-row min-h-screen m-8">
+                <div className="flex flex-col min-h-screen items-center justify-center gap-8">
                     <Logo />
                     {hasSecret && (
                         <>
