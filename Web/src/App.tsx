@@ -14,8 +14,8 @@ function App() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="flex-row min-h-screen m-8">
-                <div className="flex flex-col min-h-screen items-center justify-center gap-8">
+            <div className="flex-row min-h-screen px-4">
+                <div className="flex flex-col min-h-screen items-center justify-center gap-8 py-4">
                     <div className="flex flex-row">
                         <Logo />
                         <div className="w-8"></div>
