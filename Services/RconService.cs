@@ -45,7 +45,7 @@ namespace WhitelistCompanion.Services
         {
             if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
 
-            var rcon = await GetRconClientAsync();
+            using var rcon = await GetRconClientAsync();
             var result = await rcon.SendCommandAsync<WhitelistAddCommandResponse>($"whitelist add {username}");
 
             return result;
@@ -53,7 +53,7 @@ namespace WhitelistCompanion.Services
 
         public async Task<WhitelistListCommandResponse> GetWhitelist()
         {
-            var rcon = await GetRconClientAsync();
+            using var rcon = await GetRconClientAsync();
             var result = await rcon.SendCommandAsync<WhitelistListCommandResponse>("whitelist list");
 
             return result;
