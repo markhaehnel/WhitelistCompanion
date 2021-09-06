@@ -18,6 +18,9 @@ function App() {
                     <Logo />
                     {hasSecret && (
                         <>
+                            <code className="text-2xl text-white font-mono">
+                                mc.noob-box.net
+                            </code>
                             <WhitelistAddForm />
                             <WhitelistList />
                         </>
