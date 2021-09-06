@@ -5,6 +5,7 @@ import { WhitelistList } from "./components/WhitelistList";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { getSecretFromLocation } from "./api";
 import { Card } from "./components/Card";
+import { InfoText } from "./components/InfoText";
 
 const queryClient = new QueryClient();
 
@@ -15,12 +16,13 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <div className="flex-row min-h-screen m-8">
                 <div className="flex flex-col min-h-screen items-center justify-center gap-8">
-                    <Logo />
+                    <div className="flex flex-row">
+                        <Logo />
+                        <div className="w-8"></div>
+                        <InfoText />
+                    </div>
                     {hasSecret && (
                         <>
-                            <code className="text-2xl text-white font-mono">
-                                mc.noob-box.net
-                            </code>
                             <WhitelistAddForm />
                             <WhitelistList />
                         </>

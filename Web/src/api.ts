@@ -42,3 +42,22 @@ export const postWhitelist = async (user: string) => {
 
     return res.json();
 };
+
+export const fetchUserList = async () => {
+    const res = await fetch("/userlist", {
+        headers: {
+            ApiKey: getSecretFromLocation(),
+        },
+        method: "GET",
+        mode: "cors",
+    });
+
+    if (!res.ok) {
+        const error = new Error(
+            "An error occurred while fetching the userlist."
+        );
+        throw error;
+    }
+
+    return res.json();
+};

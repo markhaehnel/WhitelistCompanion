@@ -5,7 +5,7 @@ export function Logo() {
         <div className="flex-col">
             <div className="flex-grow" />
             <svg
-                className="inline-block w-[192px]"
+                className="inline-block w-[64px]"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 887 1024"
                 fill="#fff"
