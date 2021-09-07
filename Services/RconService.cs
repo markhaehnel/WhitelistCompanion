@@ -7,6 +7,7 @@ using CoreRCON;
 using CoreRCON.Parsers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Nito.AsyncEx;
 using WhitelistCompanion.Models.Rcon;
 
 namespace WhitelistCompanion.Services
@@ -17,7 +18,7 @@ namespace WhitelistCompanion.Services
         private readonly IConfiguration _config;
 
         private RCON _rcon;
-        private bool _rconGuard;
+        private readonly AsyncLock _rconLock = new();
         private readonly string _host;
         private readonly ushort _port;
         private readonly string _password;
@@ -34,26 +35,36 @@ namespace WhitelistCompanion.Services
             _logger.LogDebug($"Using {_host}:{_port} for RCON connections");
         }
 
+        public async Task<WhitelistAddCommandResponse> AddToWhitelist(string username)
+        {
+            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
+            var result = await GuardedSendCommandAsync<WhitelistAddCommandResponse>($"whitelist add {username}");
+            return result;
+        }
+
+        public async Task<WhitelistListCommandResponse> GetWhitelist()
+        {
+            var result = await GuardedSendCommandAsync<WhitelistListCommandResponse>("whitelist list");
+            return result;
+        }
+
+        public async Task<UserListCommandResponse> GetUserList()
+        {
+            var result = await GuardedSendCommandAsync<UserListCommandResponse>("list");
+            return result;
+        }
+
         private async Task<T> GuardedSendCommandAsync<T>(string command) where T : class, IParseable, new()
         {
-            while (_rconGuard) await Task.Delay(100);
+            // Attempt to take the lock only for 3 seconds.
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
 
-            _rconGuard = true;
-
-            try
+            using (await _rconLock.LockAsync(cts.Token))
             {
                 var rcon = await GetRconClientAsync();
                 var result = await rcon.SendCommandAsync<T>(command);
 
                 return result;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                _rconGuard = false;
             }
         }
 
@@ -75,25 +86,6 @@ namespace WhitelistCompanion.Services
             };
 
             return _rcon;
-        }
-
-        public async Task<WhitelistAddCommandResponse> AddToWhitelist(string username)
-        {
-            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
-            var result = await GuardedSendCommandAsync<WhitelistAddCommandResponse>($"whitelist add {username}");
-            return result;
-        }
-
-        public async Task<WhitelistListCommandResponse> GetWhitelist()
-        {
-            var result = await GuardedSendCommandAsync<WhitelistListCommandResponse>("whitelist list");
-            return result;
-        }
-
-        public async Task<UserListCommandResponse> GetUserList()
-        {
-            var result = await GuardedSendCommandAsync<UserListCommandResponse>("list");
-            return result;
         }
     }
 }

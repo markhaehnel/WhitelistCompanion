@@ -12,6 +12,7 @@
     <ItemGroup>
         <PackageReference Include="CoreRCON" Version="5.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.9" />
+        <PackageReference Include="Nito.AsyncEx" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>
