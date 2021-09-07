@@ -1,9 +1,11 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WhitelistCompanion.Configuration;
 using WhitelistCompanion.Services;
 
 namespace WhitelistCompanion
@@ -26,6 +28,9 @@ namespace WhitelistCompanion
             services.AddOptions<MinecraftConfiguration>()
                 .Bind(Configuration.GetSection(MinecraftConfiguration.Section))
                 .ValidateDataAnnotations();
+            services.AddOptions<MicrosoftAuthConfiguration>()
+                .Bind(Configuration.GetSection(MicrosoftAuthConfiguration.Section))
+                .ValidateDataAnnotations();
 
             services.AddControllersWithViews();
 
@@ -36,6 +41,24 @@ namespace WhitelistCompanion
             });
 
             services.AddSingleton<RconService>();
+            services.AddSingleton<AuthService>();
+
+            services.AddHttpClient(Constants.MICROSOFT_AUTH_API_CLIENT_NAME, client =>
+            {
+                client.BaseAddress = new Uri("https://login.microsoftonline.com/consumers/oauth2/v2.0/");
+            });
+            services.AddHttpClient(Constants.XBL_API_CLIENT_NAME, client =>
+            {
+                client.BaseAddress = new Uri("https://user.auth.xboxlive.com/");
+            });
+            services.AddHttpClient(Constants.XSTS_API_CLIENT_NAME, client =>
+            {
+                client.BaseAddress = new Uri("https://xsts.auth.xboxlive.com/xsts/");
+            });
+            services.AddHttpClient(Constants.MINECRAFT_API_CLIENT_NAME, client =>
+            {
+                client.BaseAddress = new Uri("https://api.minecraftservices.com/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

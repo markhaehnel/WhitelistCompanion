@@ -8,6 +8,7 @@ using CoreRCON.Parsers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Nito.AsyncEx;
+using WhitelistCompanion.Configuration;
 using WhitelistCompanion.Models.Rcon;
 
 namespace WhitelistCompanion.Services

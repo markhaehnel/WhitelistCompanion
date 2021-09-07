@@ -60,6 +60,13 @@ Configuration is done by environment variables.
     MC__PASSWORD=YourMcRCONPassword
     ```
 
+## FAQ
+
+### How does authentication with work?
+
+Authentication with Microsoft accounts is explained [here](https://wiki.vg/Microsoft_Authentication_Scheme).
+More about the Mojang authentication can be found [here](https://wiki.vg/Authentication).
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
