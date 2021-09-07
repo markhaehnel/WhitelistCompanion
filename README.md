@@ -27,10 +27,10 @@ services:
         ports:
             - "5000:5000"
         environment:
-            APIKEY: SuperSecretApiKey
-            MC_HOST: localhost
-            MC_PORT: 25575
-            MC_PASSWORD: YourMcRCONPassword
+            API__KEY: SuperSecretApiKey
+            MC__HOST: localhost
+            MC__PORT: 25575
+            MC__PASSWORD: YourMcRCONPassword
 ```
 
 ## Usage
@@ -45,19 +45,19 @@ Configuration is done by environment variables.
 
 -   ```bash
     # The secret that is needed to authenticate to the companion API
-    APIKEY=SuperSecretApiKey
+    API__KEY=SuperSecretApiKey
     ```
 -   ```bash
     # Hostname of the minecraft server
-    MC_HOST=localhost
+    MC__HOST=localhost
     ```
 -   ```bash
     # RCON port of the minecraft server
-    MC_PORT=25575
+    MC__PORT=25575
     ```
 -   ```bash
     # RCON password of the minecraft server
-    MC_PASSWORD=YourMcRCONPassword
+    MC__PASSWORD=YourMcRCONPassword
     ```
 
 ## Contributing

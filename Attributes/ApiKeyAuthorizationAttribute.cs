@@ -1,10 +1,9 @@
 using System;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace WhitelistCompanion.Attributes
 {
@@ -25,8 +24,8 @@ namespace WhitelistCompanion.Attributes
                 return;
             }
 
-            var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var apiKey = appSettings.GetValue<string>(APIKEYNAME);
+            var apiConfig = context.HttpContext.RequestServices.GetRequiredService<IOptions<ApiConfiguration>>().Value;
+            var apiKey = apiConfig.Key;
 
             if (!apiKey.Equals(extractedApiKey))
             {

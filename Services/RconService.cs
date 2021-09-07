@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoreRCON;
 using CoreRCON.Parsers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Nito.AsyncEx;
 using WhitelistCompanion.Models.Rcon;
 
@@ -15,24 +15,17 @@ namespace WhitelistCompanion.Services
     public class RconService
     {
         private readonly ILogger<RconService> _logger;
-        private readonly IConfiguration _config;
+        private readonly MinecraftConfiguration _config;
 
         private RCON _rcon;
         private readonly AsyncLock _rconLock = new();
-        private readonly string _host;
-        private readonly ushort _port;
-        private readonly string _password;
 
-        public RconService(ILogger<RconService> logger, IConfiguration config)
+        public RconService(ILogger<RconService> logger, IOptions<MinecraftConfiguration> options)
         {
             _logger = logger;
-            _config = config;
+            _config = options.Value;
 
-            _host = _config.GetValue<string>("MC_HOST");
-            _port = _config.GetValue<ushort>("MC_PORT");
-            _password = _config.GetValue<string>("MC_PASSWORD");
-
-            _logger.LogDebug($"Using {_host}:{_port} for RCON connections");
+            _logger.LogDebug($"Using {_config.Hostname}:{_config.Port} for RCON connections");
         }
 
         public async Task<WhitelistAddCommandResponse> AddToWhitelist(string username)
@@ -76,8 +69,8 @@ namespace WhitelistCompanion.Services
                 return _rcon;
             }
 
-            var ip = (await Dns.GetHostAddressesAsync(_host)).First();
-            _rcon = new RCON(ip, _port, _password);
+            var ip = (await Dns.GetHostAddressesAsync(_config.Hostname)).First();
+            _rcon = new RCON(ip, _config.Port, _config.Password);
             await _rcon.ConnectAsync();
             _rcon.OnDisconnected += () =>
             {
