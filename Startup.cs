@@ -43,19 +43,19 @@ namespace WhitelistCompanion
             services.AddSingleton<RconService>();
             services.AddSingleton<AuthService>();
 
-            services.AddHttpClient(Constants.MICROSOFT_AUTH_API_CLIENT_NAME, client =>
+            services.AddHttpClient(Constants.MicrosoftAuthApiClientName, client =>
             {
                 client.BaseAddress = new Uri("https://login.microsoftonline.com/consumers/oauth2/v2.0/");
             });
-            services.AddHttpClient(Constants.XBL_API_CLIENT_NAME, client =>
+            services.AddHttpClient(Constants.XblApiClientName, client =>
             {
                 client.BaseAddress = new Uri("https://user.auth.xboxlive.com/");
             });
-            services.AddHttpClient(Constants.XSTS_API_CLIENT_NAME, client =>
+            services.AddHttpClient(Constants.XstsApiClientName, client =>
             {
                 client.BaseAddress = new Uri("https://xsts.auth.xboxlive.com/xsts/");
             });
-            services.AddHttpClient(Constants.MINECRAFT_API_CLIENT_NAME, client =>
+            services.AddHttpClient(Constants.MinecraftApiClientName, client =>
             {
                 client.BaseAddress = new Uri("https://api.minecraftservices.com/");
             });

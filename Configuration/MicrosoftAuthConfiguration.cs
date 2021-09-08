@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace WhitelistCompanion.Configuration
@@ -13,6 +14,6 @@ namespace WhitelistCompanion.Configuration
         public string ClientSecret { get; init; }
 
         [Url(ErrorMessage = "Value for {0} must be an URL"), MinLength(1, ErrorMessage = "Value for {0} cannot be empty")]
-        public string RedirectUri { get; init; }
+        public Uri RedirectUri { get; init; }
     }
 }

@@ -7,6 +7,10 @@
         <IsPackable>false</IsPackable>
         <SpaRoot>Web\</SpaRoot>
         <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <WarningsAsErrors>True</WarningsAsErrors>
+        <NoWarn>CA1014</NoWarn>
+        <NoWarn>CA2007</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

@@ -13,7 +13,7 @@ using WhitelistCompanion.Models.Rcon;
 
 namespace WhitelistCompanion.Services
 {
-    public class RconService
+    public class RconService : IDisposable
     {
         private readonly ILogger<RconService> _logger;
         private readonly MinecraftConfiguration _config;
@@ -21,8 +21,12 @@ namespace WhitelistCompanion.Services
         private RCON _rcon;
         private readonly AsyncLock _rconLock = new();
 
+        private bool _disposed;
+
         public RconService(ILogger<RconService> logger, IOptions<MinecraftConfiguration> options)
         {
+            if (options is null) throw new ArgumentNullException(nameof(options));
+
             _logger = logger;
             _config = options.Value;
 
@@ -51,7 +55,7 @@ namespace WhitelistCompanion.Services
         private async Task<T> GuardedSendCommandAsync<T>(string command) where T : class, IParseable, new()
         {
             // Attempt to take the lock only for 3 seconds.
-            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
 
             using (await _rconLock.LockAsync(cts.Token))
             {
@@ -80,6 +84,21 @@ namespace WhitelistCompanion.Services
             };
 
             return _rcon;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing) _rcon?.Dispose();
+
+            _disposed = true;
         }
     }
 }

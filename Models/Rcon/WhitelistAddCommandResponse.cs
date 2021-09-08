@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CoreRCON.Parsers;
@@ -16,6 +17,8 @@ namespace WhitelistCompanion.Models.Rcon
 
         public override WhitelistAddCommandResponse Load(GroupCollection groups)
         {
+            if (groups is null) throw new ArgumentNullException(nameof(groups));
+
             var hasValues = groups.Values.Any();
 
             return new WhitelistAddCommandResponse

@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WhitelistCompanion.Configuration;
@@ -22,8 +20,12 @@ namespace WhitelistCompanion.Services
 
         public AuthService(ILogger<AuthService> logger, IOptions<MicrosoftAuthConfiguration> config, IHttpClientFactory httpClientFactory)
         {
+            if (config is null) throw new ArgumentNullException(nameof(config));
+            if (httpClientFactory is null) throw new ArgumentNullException(nameof(httpClientFactory));
+
+            _logger = logger;
             _config = config.Value;
-            _httpClient = httpClientFactory.CreateClient(Constants.MICROSOFT_AUTH_API_CLIENT_NAME);
+            _httpClient = httpClientFactory.CreateClient(Constants.MicrosoftAuthApiClientName);
         }
 
         private Dictionary<string, string> GetDefaultParams()
@@ -31,25 +33,25 @@ namespace WhitelistCompanion.Services
             return new Dictionary<string, string> {
                 { "client_id", _config.ClientId },
                 { "client_secret", _config.ClientSecret },
-                { "redirect_uri", _config.RedirectUri }
+                { "redirect_uri", _config.RedirectUri.ToString() }
             };
         }
 
         private string BuildQuery(string path, Dictionary<string, string> queryParams)
         {
             var mergedParams = GetDefaultParams().Concat(queryParams);
-            var mergedParamsString = string.Join("&", mergedParams.Select(kvp => string.Format("{0}={1}", kvp.Key, kvp.Value)));
+            var mergedParamsString = string.Join("&", mergedParams.Select(kvp => $"{kvp.Key}={kvp.Value}"));
             return $"{path}?{mergedParamsString}";
         }
 
-        public string GetAuthorizeUrl(string state)
+        public Uri GetAuthorizeUri(string state)
         {
             var queryParams = new Dictionary<string, string> {
                 { "scope", "XboxLive.signin" },
                 { "response_type", "code" },
                 { "state", state }
             };
-            return $"{_httpClient.BaseAddress}{BuildQuery("authorize", queryParams)}";
+            return new Uri($"{_httpClient.BaseAddress}{BuildQuery("authorize", queryParams)}");
         }
 
         public async Task<string> ExchangeCodeForTokenAsync(string code)
@@ -60,7 +62,7 @@ namespace WhitelistCompanion.Services
                 { "code", code }
             };
 
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "token")
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Post, "token")
             {
                 Content = new FormUrlEncodedContent(GetDefaultParams().Concat(queryParams))
             };

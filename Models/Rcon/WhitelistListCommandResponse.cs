@@ -16,6 +16,8 @@ namespace WhitelistCompanion.Models.Rcon
 
         public override WhitelistListCommandResponse Load(GroupCollection groups)
         {
+            if (groups is null) throw new ArgumentNullException(nameof(groups));
+
             var usernamesValue = groups["Users"].Value;
 
             return new WhitelistListCommandResponse

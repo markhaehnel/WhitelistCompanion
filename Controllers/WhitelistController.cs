@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WhitelistCompanion.Attributes;
@@ -39,6 +40,8 @@ namespace WhitelistCompanion.Controllers
         [HttpPost]
         public async Task<ApiResponse<WhitelistAddResponse>> AddToWhitelistAsync([FromBody] WhitelistAddRequest whitelistAddRequest)
         {
+            if (whitelistAddRequest is null) throw new ArgumentNullException(nameof(whitelistAddRequest));
+
             var result = await _rconService.AddToWhitelist(whitelistAddRequest.User);
 
             return new ApiResponse<WhitelistAddResponse>

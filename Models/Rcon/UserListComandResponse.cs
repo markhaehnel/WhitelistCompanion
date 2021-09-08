@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using CoreRCON.Parsers;
 
 namespace WhitelistCompanion.Models.Rcon
 {
+
     public class UserListCommandResponse : IParseable
     {
         public int CurrentUserCount { get; init; }
@@ -18,12 +20,14 @@ namespace WhitelistCompanion.Models.Rcon
 
         public override UserListCommandResponse Load(GroupCollection groups)
         {
+            if (groups is null) throw new ArgumentNullException(nameof(groups));
+
             var usernamesValue = groups["Users"].Value;
 
             return new UserListCommandResponse
             {
-                CurrentUserCount = int.Parse(groups["CurrentUserCount"].Value),
-                MaxUserCount = int.Parse(groups["MaxUserCount"].Value),
+                CurrentUserCount = int.Parse(groups["CurrentUserCount"].Value, CultureInfo.InvariantCulture),
+                MaxUserCount = int.Parse(groups["MaxUserCount"].Value, CultureInfo.InvariantCulture),
                 Users = string.IsNullOrEmpty(usernamesValue) ? Array.Empty<string>() : usernamesValue.Split(", ")
             };
         }

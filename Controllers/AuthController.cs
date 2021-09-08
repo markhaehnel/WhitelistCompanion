@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WhitelistCompanion.Attributes;
-using WhitelistCompanion.Models;
 using WhitelistCompanion.Services;
 
 namespace WhitelistCompanion.Controllers
@@ -23,14 +21,14 @@ namespace WhitelistCompanion.Controllers
         [HttpGet()]
         public IActionResult Auth([FromQuery] string state)
         {
-            return Redirect(_authService.GetAuthorizeUrl(state));
+            return Redirect(_authService.GetAuthorizeUri(state).ToString());
         }
 
         [HttpGet("callback")]
         public async Task<IActionResult> AuthCallbackAsync([FromQuery] string code, [FromQuery] string state)
         {
             var result = await _authService.ExchangeCodeForTokenAsync(code);
-            return Ok();
+            return Redirect($"/?secret={state}");
         }
     }
 }
