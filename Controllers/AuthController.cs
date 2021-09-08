@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WhitelistCompanion.Attributes;
 using WhitelistCompanion.Services;
 
 namespace WhitelistCompanion.Controllers
@@ -18,6 +19,7 @@ namespace WhitelistCompanion.Controllers
             _authService = authService;
         }
 
+        [ApiKeyAuthorization]
         [HttpGet()]
         public IActionResult Auth([FromQuery] string state)
         {
