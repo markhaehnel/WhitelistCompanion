@@ -9,7 +9,7 @@ using WhitelistCompanion.Utils;
 
 namespace WhitelistCompanion.Attributes
 {
-    [AttributeUsage(validOn: AttributeTargets.Class)]
+    [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class ApiKeyAuthorizationAttribute : Attribute, IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -20,7 +20,8 @@ namespace WhitelistCompanion.Attributes
             var apiConfig = context.HttpContext.RequestServices.GetRequiredService<IOptions<ApiConfiguration>>().Value;
             var apiKey = apiConfig.Key;
 
-            var hasApiKey = context.HttpContext.Request.Headers.TryGetValue(Constants.ApiKeyHeaderName, out var extractedApiKey);
+            var hasApiKey = context.HttpContext.Request.Headers.TryGetValue(Constants.ApiKeyHeaderName, out var extractedApiKey)
+                            || context.HttpContext.Request.Query.TryGetValue(Constants.ApiKeyHeaderName, out extractedApiKey);
 
             if (!hasApiKey)
             {
