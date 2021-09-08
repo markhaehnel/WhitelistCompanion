@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WhitelistCompanion.Configuration;
 using WhitelistCompanion.Services;
+using WhitelistCompanion.Utils;
 
 namespace WhitelistCompanion
 {
@@ -59,6 +60,8 @@ namespace WhitelistCompanion
             {
                 client.BaseAddress = new Uri("https://api.minecraftservices.com/");
             });
+
+            services.AddControllers(options => options.Filters.Add<ExceptionFilter>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,10 +70,6 @@ namespace WhitelistCompanion
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
             }
 
             app.UseStaticFiles();

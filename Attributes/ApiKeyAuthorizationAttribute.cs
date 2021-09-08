@@ -1,12 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using WhitelistCompanion.Configuration;
-using WhitelistCompanion.Models;
+using WhitelistCompanion.Utils;
 
 namespace WhitelistCompanion.Attributes
 {
@@ -25,29 +24,17 @@ namespace WhitelistCompanion.Attributes
 
             if (!hasApiKey)
             {
-                context.Result = BuildResult($"{Constants.ApiKeyHeaderName} was not provided");
+                context.Result = JsonResultBuilder.BuildResult($"{Constants.ApiKeyHeaderName} was not provided", StatusCodes.Status401Unauthorized);
                 return;
             }
 
             if (!extractedApiKey.Equals(apiKey))
             {
-                context.Result = BuildResult($"{Constants.ApiKeyHeaderName} was not provided");
+                context.Result = JsonResultBuilder.BuildResult($"{Constants.ApiKeyHeaderName} was not provided", StatusCodes.Status401Unauthorized);
                 return;
             }
 
             await next();
-        }
-
-        private static JsonResult BuildResult(string errorMessage)
-        {
-            var result = new JsonResult(new ApiResponse<object>()
-            {
-                Error = errorMessage
-            })
-            {
-                StatusCode = StatusCodes.Status401Unauthorized
-            };
-            return result;
         }
     }
 }
