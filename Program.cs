@@ -1,5 +1,8 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+
+[assembly: CLSCompliant(false)]
 
 namespace WhitelistCompanion
 {
