@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WhitelistCompanion.Configuration;
-using WhitelistCompanion.Models.Auth;
+using WhitelistCompanion.Models.Auth.Microsoft;
+using WhitelistCompanion.Utils;
 
 namespace WhitelistCompanion.Services
 {
-    public class AuthService
+    public class MicrosoftAuthService
     {
-        private readonly ILogger<AuthService> _logger;
+        private readonly ILogger<MicrosoftAuthService> _logger;
 
         private readonly MicrosoftAuthConfiguration _config;
         private readonly HttpClient _httpClient;
 
-        public AuthService(ILogger<AuthService> logger, IOptions<MicrosoftAuthConfiguration> config, IHttpClientFactory httpClientFactory)
+        public MicrosoftAuthService(ILogger<MicrosoftAuthService> logger, IOptions<MicrosoftAuthConfiguration> config, IHttpClientFactory httpClientFactory)
         {
             if (config is null) throw new ArgumentNullException(nameof(config));
             if (httpClientFactory is null) throw new ArgumentNullException(nameof(httpClientFactory));
@@ -54,7 +55,7 @@ namespace WhitelistCompanion.Services
             return new Uri($"{_httpClient.BaseAddress}{BuildQuery("authorize", queryParams)}");
         }
 
-        public async Task<string> ExchangeCodeForTokenAsync(string code)
+        public async Task<MicrosoftAuthTokenResponse> ExchangeCodeForTokenAsync(string code)
         {
             var queryParams = new Dictionary<string, string>()
             {
@@ -70,9 +71,9 @@ namespace WhitelistCompanion.Services
             var rawResponse = await _httpClient.SendAsync(requestMessage);
             rawResponse.EnsureSuccessStatusCode();
 
-            var tokenResponse = await rawResponse.Content.ReadFromJsonAsync<TokenResponse>();
+            var tokenResponse = await rawResponse.Content.ReadFromJsonAsync<MicrosoftAuthTokenResponse>();
 
-            return tokenResponse.AccessToken;
+            return tokenResponse;
         }
     }
 }

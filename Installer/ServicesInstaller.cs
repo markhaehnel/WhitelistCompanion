@@ -12,7 +12,10 @@ namespace WhitelistCompanion.Installer
             if (configuration is null) throw new ArgumentNullException(nameof(configuration));
 
             services.AddSingleton<RconService>();
-            services.AddSingleton<AuthService>();
+            services.AddScoped<MicrosoftAuthService>();
+            services.AddScoped<XboxLiveService>();
+            services.AddScoped<XstsService>();
+            services.AddScoped<MinecraftService>();
         }
     }
 

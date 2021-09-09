@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WhitelistCompanion.Utils;
 
 namespace WhitelistCompanion.Installer
 {
@@ -14,7 +15,7 @@ namespace WhitelistCompanion.Installer
             {
                 client.BaseAddress = new Uri("https://login.microsoftonline.com/consumers/oauth2/v2.0/");
             });
-            services.AddHttpClient(Constants.XblApiClientName, client =>
+            services.AddHttpClient(Constants.XboxLiveApiClientName, client =>
             {
                 client.BaseAddress = new Uri("https://user.auth.xboxlive.com/");
             });
