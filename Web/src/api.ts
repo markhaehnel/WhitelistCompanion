@@ -10,10 +10,6 @@ export const removeQueryParam = (param: string) => {
     history.pushState({}, "Whitelist Companion", url);
 };
 
-var href = new URL("https://google.com?q=cats");
-href.searchParams.delete("q");
-console.log(href.toString()); // https://google.com/?q=dogs
-
 export const fetchWhitelist = async () => {
     const res = await fetch("/whitelist", {
         headers: {
