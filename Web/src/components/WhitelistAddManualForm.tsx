@@ -18,11 +18,13 @@ export function WhitelistAddManualForm() {
             queryClient.invalidateQueries();
             setUser("");
             setUserAdded(true);
+            setTimeout(() => setUserAdded(false), 5000);
+
             inputRef?.current?.focus();
         } catch {
             setUserAdded(false);
             setUserAddedError(
-                "Ungültiger Username oder bereits auf der Whitelist"
+                "Ungültiger Nickname oder bereits auf der Whitelist."
             );
             setTimeout(() => setUserAddedError(""), 5000);
         }
@@ -54,38 +56,38 @@ export function WhitelistAddManualForm() {
                 disabled={mutation.isLoading}
                 className="text-lg p-2 rounded-md outline-none bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-transparent dark:placeholder-gray-400 border-2 transition-all focus:border-gray-600 focus:shadow-lg disabled:text-gray-400 dark:disabled:text-gray-500"
             />
-            <button
-                onClick={() => addToWhitelist(user)}
-                disabled={
-                    mutation.isLoading || user === "" || userAddedError !== ""
-                }
-                className={`w-full text-center text-lg text-white bg-blue-600 border-2 border-transparent p-2 rounded-md shadow cursor-pointer hover:bg-blue-500 hover:shadow-lg active:bg-blue-600 active:scale-95 focus:border-gray-600 ${
-                    userAddedError
-                        ? "disabled:bg-red-700"
-                        : "disabled:bg-blue-700"
-                } ${
-                    userAddedError
-                        ? "dark:disabled:bg-red-700"
-                        : "dark:disabled:bg-gray-700"
-                } ${
-                    userAddedError
-                        ? "dark:disabled:text-white"
-                        : "dark:disabled:text-gray-400"
-                } disabled:cursor-not-allowed transition-all`}
-            >
-                {mutation.isLoading ? (
-                    <div className="flex flex-row items-center justify-center gap-2">
-                        <div className="inline-flex">
-                            <Loader />
-                        </div>{" "}
-                        Verarbeite...
-                    </div>
-                ) : !userAddedError ? (
-                    "Zur Whitelist hinzufügen"
-                ) : (
-                    userAddedError
-                )}
-            </button>
+            {!userAdded && !userAddedError ? (
+                <button
+                    onClick={() => addToWhitelist(user)}
+                    disabled={mutation.isLoading || user === ""}
+                    className="w-full text-center text-lg text-white bg-blue-600 border-2 border-transparent p-2 rounded-md shadow cursor-pointer hover:bg-blue-500 hover:shadow-lg active:bg-blue-600 active:scale-95 focus:border-gray-600 disabled:bg-blue-700 dark:disabled:bg-gray-700 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all"
+                >
+                    {mutation.isLoading ? (
+                        <div className="flex flex-row items-center justify-center gap-2">
+                            <div className="inline-flex">
+                                <Loader />
+                            </div>{" "}
+                            Verarbeite...
+                        </div>
+                    ) : (
+                        "Zur Whitelist hinzufügen"
+                    )}
+                </button>
+            ) : userAdded ? (
+                <button
+                    disabled={true}
+                    className="w-full text-center text-lg text-white bg-green-500 dark:bg-green-500 border-2 border-transparent p-2 rounded-md shadow cursor-not-allowed transition-all"
+                >
+                    Erfolgreich hinzugefügt.
+                </button>
+            ) : (
+                <button
+                    disabled={true}
+                    className="w-full text-center text-lg text-white bg-red-500 dark:bg-red-700 border-2 border-transparent p-2 rounded-md shadow cursor-not-allowed transition-all"
+                >
+                    {userAddedError}
+                </button>
+            )}
         </div>
     );
 }

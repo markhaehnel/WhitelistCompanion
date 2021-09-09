@@ -27,10 +27,6 @@ namespace WhitelistCompanion.Services
             _logger = logger;
             _config = config.Value;
             _httpClient = httpClientFactory.CreateClient(Constants.MicrosoftAuthApiClientName);
-
-            _logger.LogDebug("ClientId", _config.ClientId);
-            _logger.LogDebug("ClientSecret", _config.ClientSecret);
-            _logger.LogDebug("RedirectUri", _config.RedirectUri.ToString());
         }
 
         private Dictionary<string, string> GetDefaultParams()
