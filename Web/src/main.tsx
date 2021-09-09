@@ -7,7 +7,11 @@ import App from "./App";
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <div className="flex-row min-h-screen px-4">
+            <div className="flex flex-col min-h-screen items-center justify-center gap-8 py-4">
+                <App />
+            </div>
+        </div>
     </React.StrictMode>,
     document.getElementById("root")
 );

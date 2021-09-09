@@ -1,12 +1,23 @@
-export const getSecretFromLocation = (): string => {
+export const getQueryParam = (param: string): string | null => {
     let params = new URL(document.location.toString()).searchParams;
-    return params.get("secret") ?? "";
+    return params.get(param);
 };
+
+export const removeQueryParam = (param: string) => {
+    let url = new URL(document.location.toString());
+    url.searchParams.delete(param);
+
+    history.pushState({}, "Whitelist Companion", url);
+};
+
+var href = new URL("https://google.com?q=cats");
+href.searchParams.delete("q");
+console.log(href.toString()); // https://google.com/?q=dogs
 
 export const fetchWhitelist = async () => {
     const res = await fetch("/whitelist", {
         headers: {
-            ApiKey: getSecretFromLocation(),
+            ApiKey: getQueryParam("secret") ?? "",
         },
         method: "GET",
         mode: "cors",
@@ -25,7 +36,7 @@ export const fetchWhitelist = async () => {
 export const postWhitelist = async (user: string) => {
     const res = await fetch("/whitelist", {
         headers: {
-            ApiKey: getSecretFromLocation(),
+            ApiKey: getQueryParam("secret") ?? "",
             "Content-Type": "application/json",
         },
         method: "POST",
@@ -46,7 +57,7 @@ export const postWhitelist = async (user: string) => {
 export const fetchUserList = async () => {
     const res = await fetch("/userlist", {
         headers: {
-            ApiKey: getSecretFromLocation(),
+            ApiKey: getQueryParam("secret") ?? "",
         },
         method: "GET",
         mode: "cors",
