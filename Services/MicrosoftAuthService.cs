@@ -34,7 +34,7 @@ namespace WhitelistCompanion.Services
             return new Dictionary<string, string> {
                 { "client_id", _config.ClientId },
                 { "client_secret", _config.ClientSecret },
-                { "redirect_uri", _config.RedirectUri.ToString() }
+                { "redirect_uri", _config.RedirectUri }
             };
         }
 

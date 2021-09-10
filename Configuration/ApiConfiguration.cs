@@ -6,7 +6,9 @@ namespace WhitelistCompanion.Configuration
     {
         public const string Section = "Api";
 
-        [RegularExpression(@"^([a-zA-Z0-9]){8,}$", ErrorMessage = "Value for {0} must be alphanumeric and have length of 8 or more")]
+        [Required]
+        [MinLength(8)]
+        [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "The {0} field must be alphanumeric.")]
         public string Key { get; init; }
     }
 }

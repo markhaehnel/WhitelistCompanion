@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WhitelistCompanion.Configuration;
+using WhitelistCompanion.Extensions;
 
 namespace WhitelistCompanion.Installer
 {
@@ -11,16 +13,9 @@ namespace WhitelistCompanion.Installer
         {
             if (configuration is null) throw new ArgumentNullException(nameof(configuration));
 
-            services.AddOptions<ApiConfiguration>()
-                .Bind(configuration.GetSection(ApiConfiguration.Section))
-                .ValidateDataAnnotations();
-            services.AddOptions<MinecraftConfiguration>()
-                .Bind(configuration.GetSection(MinecraftConfiguration.Section))
-                .ValidateDataAnnotations();
-            services.AddOptions<MicrosoftAuthConfiguration>()
-                .Bind(configuration.GetSection(MicrosoftAuthConfiguration.Section))
-                .ValidateDataAnnotations();
+            services.ConfigureAndValidate<ApiConfiguration>(ApiConfiguration.Section, configuration);
+            services.ConfigureAndValidate<MicrosoftAuthConfiguration>(MicrosoftAuthConfiguration.Section, configuration);
+            services.ConfigureAndValidate<MinecraftConfiguration>(MinecraftConfiguration.Section, configuration);
         }
     }
-
 }

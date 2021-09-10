@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WhitelistCompanion.Configuration
 {
@@ -7,12 +8,15 @@ namespace WhitelistCompanion.Configuration
     {
         public const string Section = "Auth:Microsoft";
 
-        [MinLength(1, ErrorMessage = "Value for {0} cannot be empty")]
+        [Required]
         public string ClientId { get; init; }
 
-        [MinLength(1, ErrorMessage = "Value for {0} cannot be empty")]
+        [Required]
         public string ClientSecret { get; init; }
 
-        public Uri RedirectUri { get; init; }
+        [Required]
+        [Url]
+        [SuppressMessage("Microsoft.Usage", "CA1056")]
+        public string RedirectUri { get; init; }
     }
 }
