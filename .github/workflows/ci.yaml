@@ -1,6 +1,9 @@
 name: CI
 
-on: [push, pull_request]
+on:
+    push:
+    release:
+        types: [published]
 
 jobs:
     build:
@@ -42,4 +45,4 @@ jobs:
                   context: .
                   platforms: linux/amd64
                   push: true
-                  tags: ghcr.io/${{ github.repository_owner }}/whitelist-companion:main
+                  tags: ghcr.io/${{ github.repository_owner }}/whitelist-companion:{{ github.ref }}
