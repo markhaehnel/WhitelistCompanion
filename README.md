@@ -31,6 +31,9 @@ services:
             MC__HOST: localhost
             MC__PORT: 25575
             MC__PASSWORD: YourMcRCONPassword
+            AUTH__MICROSOFT__CLIENTID: "MyClientId"
+            AUTH__MICROSOFT__CLIENTSECRET: "MyClientSecret"
+            AUTH__MICROSOFT__REDIRECTURI: "https://example.com/auth/callback"
 ```
 
 ## Usage
@@ -58,6 +61,18 @@ Configuration is done by environment variables.
 -   ```bash
     # RCON password of the minecraft server
     MC__PASSWORD=YourMcRCONPassword
+    ```
+-   ```bash
+    # Azure AD app client id
+    AUTH__MICROSOFT__CLIENTID=MyClientId
+    ```
+-   ```bash
+    # Azure AD app client secret
+    AUTH__MICROSOFT__CLIENTSECRET=MyClientSecret
+    ```
+-   ```bash
+    # Azure AD registerd callback url
+    AUTH__MICROSOFT__REDIRECTURI=https://example.com/auth/callback
     ```
 
 ## FAQ
