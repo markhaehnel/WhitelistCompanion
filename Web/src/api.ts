@@ -20,10 +20,7 @@ export const fetchWhitelist = async () => {
     });
 
     if (!res.ok) {
-        const error = new Error(
-            "An error occurred while fetching the whitelist."
-        );
-        throw error;
+        throw new HttpError(res.status, res.statusText);
     }
 
     return res.json();
@@ -41,10 +38,7 @@ export const postWhitelist = async (user: string) => {
     });
 
     if (!res.ok) {
-        const error = new Error(
-            "An error occurred while adding to the whitelist."
-        );
-        throw error;
+        throw new HttpError(res.status, res.statusText);
     }
 
     return res.json();
@@ -60,11 +54,19 @@ export const fetchUserList = async () => {
     });
 
     if (!res.ok) {
-        const error = new Error(
-            "An error occurred while fetching the userlist."
-        );
-        throw error;
+        throw new HttpError(res.status, res.statusText);
     }
 
     return res.json();
 };
+
+export class HttpError extends Error {
+    constructor(statusCode: number, msg: string) {
+        super(msg);
+        Object.setPrototypeOf(this, HttpError.prototype);
+
+        this.statusCode = statusCode;
+    }
+
+    public readonly statusCode: number;
+}

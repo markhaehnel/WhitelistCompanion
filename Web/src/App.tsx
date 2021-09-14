@@ -2,37 +2,25 @@ import React from "react";
 import { Logo } from "./components/Logo";
 import { WhitelistList } from "./components/WhitelistList";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { getQueryParam } from "./api";
-import { Card } from "./components/Card";
 import { InfoText } from "./components/InfoText";
 import { WhitelistAddCard } from "./components/WhitelistAddCard";
+import { AuthContainer } from "./components/AuthContainer";
 
 const queryClient = new QueryClient();
 
 function App() {
-    const hasSecret = getQueryParam("secret") !== "";
-
-    if (hasSecret) {
-        return (
-            <QueryClientProvider client={queryClient}>
-                <div className="flex flex-row">
-                    <Logo />
-                    <div className="w-8"></div>
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Logo />
+            <AuthContainer>
+                <>
                     <InfoText />
-                </div>
-                <WhitelistAddCard />
-                <WhitelistList />
-            </QueryClientProvider>
-        );
-    } else {
-        return (
-            <Card error={true}>
-                <div className="text-lg p-2 text-center">
-                    Nicht autorisiert!
-                </div>
-            </Card>
-        );
-    }
+                    <WhitelistAddCard />
+                    <WhitelistList />
+                </>
+            </AuthContainer>
+        </QueryClientProvider>
+    );
 }
 
 export default App;

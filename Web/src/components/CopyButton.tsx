@@ -11,7 +11,11 @@ export function CopyButton({ value }: { value: string }) {
     }
 
     return (
-        <div className="flex flex-row">
+        <div
+            className={`flex flex-row transition-all duration-300 ${
+                !copied ? "-mr-6" : "mr-0"
+            }`}
+        >
             <div
                 className={`transition-all duration-300 ${
                     !copied ? "mr-0" : "-mr-6"
