@@ -1,11 +1,11 @@
-import React from "react";
+import { Box, Container, Flex } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/react";
+import * as React from "react";
 import { useQuery } from "react-query";
 import { fetchUserList, getQueryParam, HttpError } from "../api";
 import { Card } from "./Card";
-import { Loader } from "./Loader";
-import { Logo } from "./Logo";
 
-export function AuthContainer({ children }: { children: JSX.Element }) {
+const AuthContainer: React.FC = ({ children }) => {
     const hasSecret = getQueryParam("secret");
 
     const { error, isFetching } = useQuery("auth", fetchUserList, {
@@ -15,39 +15,32 @@ export function AuthContainer({ children }: { children: JSX.Element }) {
     });
 
     const httpError = error as HttpError;
+    const notAuthorized =
+        !hasSecret || (hasSecret && httpError && httpError.statusCode === 401);
 
-    if (
-        !hasSecret ||
-        (hasSecret && httpError && httpError.statusCode === 401)
-    ) {
+    if (error || notAuthorized) {
         return (
-            <>
-                <Card error={true}>
-                    <div className="text-lg p-2 text-center">
-                        Nicht autorisiert!
-                    </div>
-                </Card>
-            </>
+            <Card error={true}>
+                <Box fontSize="lg" p={2} textAlign="center" minW={320}>
+                    {notAuthorized ? (
+                        <>Nicht autorisiert!</>
+                    ) : (
+                        <>Es ist ein unerwarteter Fehler aufgetreten.</>
+                    )}
+                </Box>
+            </Card>
         );
-    } else if (httpError) {
-        return (
-            <>
-                <Card error={true}>
-                    <div className="text-lg p-2 text-center">
-                        <span className="block">
-                            Es ist ein unerwarteter Fehler aufgetreten.
-                        </span>
-                    </div>
-                </Card>
-            </>
-        );
-    } else if (isFetching && !error) {
-        return (
-            <div className="flex flex-col text-white justify-center items-center gap-4">
-                <Loader />
-            </div>
-        );
-    } else {
-        return <>{children}</>;
     }
-}
+
+    if (isFetching && !error) {
+        return (
+            <Flex direction="column" color="white">
+                <Spinner />
+            </Flex>
+        );
+    }
+
+    return <>{children}</>;
+};
+
+export { AuthContainer };

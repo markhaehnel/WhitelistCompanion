@@ -1,20 +1,25 @@
-import React from "react";
+import { useColorModeValue } from "@chakra-ui/color-mode";
+import { Box } from "@chakra-ui/layout";
+import * as React from "react";
 
-export function Card({
-    error = false,
-    children,
-}: {
-    error?: boolean;
-    children: JSX.Element;
-}) {
-    const bgColor = error ? "bg-red-600" : "bg-white dark:bg-gray-800";
-    const fontColor = error ? "text-white" : "text-black dark:text-white";
+const Card: React.FC<{ error?: boolean }> = ({ error = false, children }) => {
+    const bgColor = useColorModeValue("white", "gray.800");
+    const bgColorWithError = error ? "red.600" : bgColor;
+
+    const textColor = useColorModeValue("black", "white");
+    const textColorWithError = error ? "white" : textColor;
 
     return (
-        <div
-            className={`select-none flex flex-col ${bgColor} ${fontColor} rounded-lg shadow-lg max-w-full w-[512px]`}
+        <Box
+            bgColor={bgColorWithError}
+            textColor={textColorWithError}
+            rounded={{ base: "none", md: "lg" }}
+            shadow="lg"
+            overflow="auto"
         >
             {children}
-        </div>
+        </Box>
     );
-}
+};
+
+export { Card };
