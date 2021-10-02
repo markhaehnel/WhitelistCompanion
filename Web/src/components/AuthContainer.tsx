@@ -11,6 +11,7 @@ export function AuthContainer({ children }: { children: JSX.Element }) {
     const { error, isFetching } = useQuery("auth", fetchUserList, {
         retry: 1,
         refetchOnWindowFocus: false,
+        refetchInterval: false,
     });
 
     const httpError = error as HttpError;
