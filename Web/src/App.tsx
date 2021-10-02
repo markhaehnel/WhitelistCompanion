@@ -7,7 +7,13 @@ import { WhitelistAddCard } from "./components/WhitelistAddCard";
 import { AuthContainer } from "./components/AuthContainer";
 import { PlayerList } from "./components/PlayerList";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchInterval: 10000,
+        },
+    },
+});
 
 function App() {
     return (
