@@ -16,7 +16,7 @@ function App() {
             <AuthContainer>
                 <>
                     <InfoText />
-                    <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex flex-col xl:flex-row gap-4">
                         <div className="flex flex-col gap-4">
                             <WhitelistAddCard />
                             <WhitelistList />
