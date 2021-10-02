@@ -19,7 +19,14 @@ export function PlayerList() {
         <Card>
             <div className="">
                 <div className="flex flex-row m-4">
-                    <div className="text-xl">Online Spieler</div>
+                    <div className="text-xl">
+                        Online{" "}
+                        {data && (
+                            <span className="font-thin">
+                                ({data?.currentUserCount}/{data?.maxUserCount})
+                            </span>
+                        )}
+                    </div>
                     <div className="flex-grow"></div>
                     <div
                         className={`transition-opacity ${
