@@ -1,7 +1,0 @@
-body {
-    @apply bg-blue-600 dark:bg-gray-900;
-}
-
-.simplebar-scrollbar::before {
-    @apply bg-gray-500 dark:bg-gray-400;
-}

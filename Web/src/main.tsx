@@ -1,17 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "tailwindcss/tailwind.css";
 import "simplebar/dist/simplebar.min.css";
-import "./styles.css";
 import App from "./App";
+import { ChakraProvider, ColorModeScript, Flex } from "@chakra-ui/react";
+import theme from "./theme";
 
 ReactDOM.render(
     <React.StrictMode>
-        <div className="flex-row min-h-screen px-4">
-            <div className="flex flex-col min-h-screen items-center justify-center gap-8 py-4">
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <ChakraProvider theme={theme}>
+            <Flex
+                direction="column"
+                alignItems="center"
+                justify="center"
+                minH="100vh"
+                py={8}
+            >
                 <App />
-            </div>
-        </div>
+            </Flex>
+        </ChakraProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );

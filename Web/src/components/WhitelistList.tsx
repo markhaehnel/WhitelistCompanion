@@ -1,9 +1,13 @@
-import React from "react";
+import * as React from "react";
 import { useQuery } from "react-query";
 import { fetchWhitelist } from "../api";
 import { Card } from "./Card";
-import { Loader } from "./Loader";
 import SimpleBar from "simplebar-react";
+import { Spinner } from "@chakra-ui/spinner";
+import { Box, Flex, Spacer } from "@chakra-ui/layout";
+import { Text, useColorModeValue } from "@chakra-ui/react";
+import { ScrollableListContent } from "./ScrollableListContent";
+
 export function WhitelistList() {
     const {
         data: users,
@@ -18,51 +22,23 @@ export function WhitelistList() {
 
     return (
         <Card>
-            <div className="">
-                <div className="flex flex-row m-4">
-                    <div className="text-xl">Whitelist</div>
-                    <div className="flex-grow"></div>
-                    <div
-                        className={`transition-opacity ${
-                            isFetching ? "opacity-100" : "opacity-0"
-                        }`}
-                    >
-                        <Loader />
-                    </div>
-                </div>
+            <Flex p={4}>
+                <Text fontSize="xl">Whitelist</Text>
+                <Spacer />
+                <Spinner
+                    transition="150ms linear"
+                    opacity={isFetching ? 100 : 0}
+                />
+            </Flex>
 
-                <SimpleBar
-                    forceVisible="y"
-                    autoHide={false}
-                    clickOnTrack={false}
-                    className="flex flex-col overflow-y-auto h-[320px]"
-                >
-                    {error && (
-                        <div className="text-md py-2 px-4">
-                            Fehler beim Laden der Whitelist.
-                        </div>
-                    )}
+            <ScrollableListContent
+                items={users as string[]}
+                error={error ? "Fehler beim Laden der Whitelist." : undefined}
+                empty="Keine Spieler auf der Whitelist."
+                minMaxHeight="350px"
+            />
 
-                    <div
-                        className={`flex flex-col transition-opacity ${
-                            !error && users ? "opacity-100" : "opacity-0"
-                        }`}
-                    >
-                        {users?.map((user: string) => {
-                            return (
-                                <div
-                                    className="text-md odd:bg-gray-100 dark:odd:bg-gray-700 py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-500"
-                                    key={user}
-                                >
-                                    {user}
-                                </div>
-                            );
-                        })}
-                    </div>
-                </SimpleBar>
-
-                <div className="h-4"></div>
-            </div>
+            <Spacer h={4} />
         </Card>
     );
 }
