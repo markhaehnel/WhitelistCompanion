@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { InfoText } from "./components/InfoText";
 import { WhitelistAddCard } from "./components/WhitelistAddCard";
 import { AuthContainer } from "./components/AuthContainer";
+import { PlayerList } from "./components/PlayerList";
 
 const queryClient = new QueryClient();
 
@@ -15,8 +16,13 @@ function App() {
             <AuthContainer>
                 <>
                     <InfoText />
-                    <WhitelistAddCard />
-                    <WhitelistList />
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex flex-col gap-4">
+                            <WhitelistAddCard />
+                            <WhitelistList />
+                        </div>
+                        <PlayerList />
+                    </div>
                 </>
             </AuthContainer>
         </QueryClientProvider>

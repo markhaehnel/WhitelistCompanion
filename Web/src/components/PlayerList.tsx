@@ -1,26 +1,25 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { fetchWhitelist } from "../api";
+import { fetchUserList } from "../api";
 import { Card } from "./Card";
 import { Loader } from "./Loader";
 import SimpleBar from "simplebar-react";
-export function WhitelistList() {
+
+export function PlayerList() {
     const {
-        data: users,
+        data: data,
         error,
         isFetching,
-    } = useQuery("whitelist", async () => {
-        let data = await fetchWhitelist();
-        return data?.data?.users.sort((a: string, b: string) =>
-            a.toLowerCase().localeCompare(b.toLowerCase())
-        );
+    } = useQuery("userlist", async () => {
+        let data = await fetchUserList();
+        return data?.data;
     });
 
     return (
         <Card>
             <div className="">
                 <div className="flex flex-row m-4">
-                    <div className="text-xl">Whitelist</div>
+                    <div className="text-xl">Online Spieler</div>
                     <div className="flex-grow"></div>
                     <div
                         className={`transition-opacity ${
@@ -35,20 +34,20 @@ export function WhitelistList() {
                     forceVisible="y"
                     autoHide={false}
                     clickOnTrack={false}
-                    className="flex flex-col overflow-y-auto h-[320px]"
+                    className="flex flex-col overflow-y-auto h-[580px]"
                 >
                     {error && (
                         <div className="text-md py-2 px-4">
-                            Fehler beim Laden der Whitelist.
+                            Fehler beim Laden der aktuellen Spieler.
                         </div>
                     )}
 
                     <div
                         className={`flex flex-col transition-opacity ${
-                            !error && users ? "opacity-100" : "opacity-0"
+                            !error && data?.users ? "opacity-100" : "opacity-0"
                         }`}
                     >
-                        {users?.map((user: string) => {
+                        {data?.users?.map((user: string) => {
                             return (
                                 <div
                                     className="text-md odd:bg-gray-100 dark:odd:bg-gray-700 py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-500"
@@ -59,6 +58,11 @@ export function WhitelistList() {
                             );
                         })}
                     </div>
+                    {data?.users?.length === 0 && (
+                        <div className="text-md odd:bg-gray-100 dark:odd:bg-gray-700 py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-500">
+                            Keine Spieler online.
+                        </div>
+                    )}
                 </SimpleBar>
 
                 <div className="h-4"></div>
