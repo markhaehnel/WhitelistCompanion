@@ -34,8 +34,8 @@ services:
             AUTH__MICROSOFT__CLIENTID: "MyClientId"
             AUTH__MICROSOFT__CLIENTSECRET: "MyClientSecret"
             AUTH__MICROSOFT__REDIRECTURI: "https://example.com/auth/callback"
-            UI_SERVERADDRESS: "mc.example.com",
-            UI_MAPURI: "https://dynmap.example.com"
+            UI__SERVERADDRESS: "mc.example.com"
+            UI__MAPURI: "https://dynmap.example.com"
 ```
 
 ## Usage
@@ -78,11 +78,11 @@ Configuration is done by environment variables.
     ```
 -   ```bash
     # Public minecraft server address
-    UI_SERVERADDRESS=mc.example.com
+    UI__SERVERADDRESS=mc.example.com
     ```
 -   ```bash
     # Public url of your map server (e.g. dynmap)
-    UI_MAPURI=https://dynmap.example.com
+    UI__MAPURI=https://dynmap.example.com
     ```
 
 ## FAQ
