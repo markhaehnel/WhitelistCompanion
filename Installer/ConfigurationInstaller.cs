@@ -14,6 +14,7 @@ namespace WhitelistCompanion.Installer
             if (configuration is null) throw new ArgumentNullException(nameof(configuration));
 
             services.ConfigureAndValidate<ApiConfiguration>(ApiConfiguration.Section, configuration);
+            services.ConfigureAndValidate<UiConfiguration>(UiConfiguration.Section, configuration);
             services.ConfigureAndValidate<MicrosoftAuthConfiguration>(MicrosoftAuthConfiguration.Section, configuration);
             services.ConfigureAndValidate<MinecraftConfiguration>(MinecraftConfiguration.Section, configuration);
         }

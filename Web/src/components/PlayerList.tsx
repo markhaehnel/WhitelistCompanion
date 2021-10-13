@@ -45,7 +45,7 @@ export function PlayerList() {
                     error ? "Fehler beim Laden der Spielerliste." : undefined
                 }
                 empty="Keine Spieler online."
-                minMaxHeight={{ base: "350px", md: "610px" }}
+                minMaxHeight={{ base: "350px", md: "265px" }}
             />
 
             <Spacer h={4} />

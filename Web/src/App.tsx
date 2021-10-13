@@ -7,6 +7,7 @@ import { WhitelistAddCard } from "./components/WhitelistAddCard";
 import { AuthContainer } from "./components/AuthContainer";
 import { PlayerList } from "./components/PlayerList";
 import { Box, GridItem, SimpleGrid, Spacer } from "@chakra-ui/layout";
+import { MapCard } from "./components/MapCard";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -37,6 +38,8 @@ function App() {
                     </GridItem>
                     <GridItem>
                         <PlayerList />
+                        <Spacer h={4} />
+                        <MapCard />
                     </GridItem>
                 </SimpleGrid>
             </AuthContainer>

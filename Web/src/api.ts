@@ -60,6 +60,22 @@ export const fetchUserList = async () => {
     return res.json();
 };
 
+export const fetchUiConfig = async () => {
+    const res = await fetch("/uiconfig", {
+        headers: {
+            ApiKey: getQueryParam("secret") ?? "",
+        },
+        method: "GET",
+        mode: "cors",
+    });
+
+    if (!res.ok) {
+        throw new HttpError(res.status, res.statusText);
+    }
+
+    return res.json();
+};
+
 export class HttpError extends Error {
     constructor(statusCode: number, msg: string) {
         super(msg);
