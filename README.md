@@ -49,47 +49,52 @@ Configuration is done by environment variables.
 
 ### Available variables
 
--   ```bash
-    # The secret that is needed to authenticate to the companion API
-    API__KEY=SuperSecretApiKey
-    ```
--   ```bash
-    # Hostname of the minecraft server
-    MC__HOST=localhost
-    ```
--   ```bash
-    # RCON port of the minecraft server
-    MC__PORT=25575
-    ```
--   ```bash
-    # RCON password of the minecraft server
-    MC__PASSWORD=YourMcRCONPassword
-    ```
--   ```bash
-    # Azure AD app client id
-    AUTH__MICROSOFT__CLIENTID=MyClientId
-    ```
--   ```bash
-    # Azure AD app client secret
-    AUTH__MICROSOFT__CLIENTSECRET=MyClientSecret
-    ```
--   ```bash
-    # Azure AD registerd callback url
-    AUTH__MICROSOFT__REDIRECTURI=https://example.com/auth/callback
-    ```
--   ```bash
-    # Public minecraft server address
-    UI__SERVERADDRESS=mc.example.com
-    ```
--   ```bash
-    # Public url of your map server (e.g. dynmap)
-    UI__MAPURI=https://dynmap.example.com
-    ```
--   ```bash
-    # Public preview url of your map server (e.g. dynmap with nogui and zoom options)
-    # This is shown on the map card
-    UI__MAPPREVIEWURI=https://dynmap.example.com/?nogui=true&zoom=3
-    ```
+#### API
+
+```bash
+# The secret that is needed to authenticate to the companion API
+API__KEY=SuperSecretApiKey
+```
+
+#### RCON
+
+```bash
+# Hostname of the minecraft server
+MC__HOST=localhost
+
+# RCON port of the minecraft server
+MC__PORT=25575
+
+# RCON password of the minecraft server
+MC__PASSWORD=YourMcRCONPassword
+```
+
+#### Authentication
+
+```bash
+# Azure AD app client id
+AUTH__MICROSOFT__CLIENTID=MyClientId
+
+# Azure AD app client secret
+AUTH__MICROSOFT__CLIENTSECRET=MyClientSecret
+
+# Azure AD registerd callback url
+AUTH__MICROSOFT__REDIRECTURI=https://example.com/auth/callback
+```
+
+#### UI
+
+```bash
+# Public minecraft server address
+UI__SERVERADDRESS=mc.example.com
+
+# Public url of your map server (e.g. dynmap)
+UI__MAPURI=https://dynmap.example.com
+
+# Public preview url of your map server (e.g. dynmap with nogui and zoom options)
+# This is shown on the map card
+UI__MAPPREVIEWURI=https://dynmap.example.com/?nogui=true&zoom=3
+```
 
 ## FAQ
 
