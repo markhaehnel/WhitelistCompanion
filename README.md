@@ -36,6 +36,7 @@ services:
             AUTH__MICROSOFT__REDIRECTURI: "https://example.com/auth/callback"
             UI__SERVERADDRESS: "mc.example.com"
             UI__MAPURI: "https://dynmap.example.com"
+            UI__MAPPREVIEWURI: "https://dynmap.example.com/?nogui=true&zoom=3"
 ```
 
 ## Usage
@@ -83,6 +84,11 @@ Configuration is done by environment variables.
 -   ```bash
     # Public url of your map server (e.g. dynmap)
     UI__MAPURI=https://dynmap.example.com
+    ```
+-   ```bash
+    # Public preview url of your map server (e.g. dynmap with nogui and zoom options)
+    # This is shown on the map card
+    UI__MAPPREVIEWURI=https://dynmap.example.com/?nogui=true&zoom=3
     ```
 
 ## FAQ
