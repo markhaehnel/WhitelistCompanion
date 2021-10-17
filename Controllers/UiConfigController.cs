@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -25,6 +26,7 @@ namespace WhitelistCompanion.Controllers
         }
 
         [HttpGet]
+        [SuppressMessage("Microsoft.Usage", "CA1024")]
         public ApiResponse<UiConfigResponse> GetUiConfig()
         {
             return new ApiResponse<UiConfigResponse>
@@ -32,7 +34,8 @@ namespace WhitelistCompanion.Controllers
                 Data = new UiConfigResponse
                 {
                     ServerAddress = _config.ServerAddress,
-                    MapUri = _config.MapUri
+                    MapUri = _config.MapUri,
+                    MapPreviewUri = string.IsNullOrEmpty(_config.MapPreviewUri) ? _config.MapUri : _config.MapPreviewUri
                 }
             };
         }

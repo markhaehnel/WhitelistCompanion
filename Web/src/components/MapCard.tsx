@@ -1,5 +1,13 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Box, Flex, Link, Spacer, Text } from "@chakra-ui/layout";
+import {
+    Box,
+    Flex,
+    Link,
+    LinkBox,
+    LinkOverlay,
+    Spacer,
+    Text,
+} from "@chakra-ui/layout";
 import { IconButton, Spinner, Tooltip, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { useQuery } from "react-query";
@@ -13,13 +21,15 @@ export function MapCard() {
         refetchInterval: false,
     });
 
+    const openMapInNewTabTooltip = "Karte in neuem Tab öffnen";
+
     return (
         <Card>
             <Flex p={4}>
                 <Text fontSize="xl">Karte</Text>
                 <Spacer />
                 {data?.data && (
-                    <Tooltip label="Karte in neuem Tab öffnen" fontSize="md">
+                    <Tooltip label={openMapInNewTabTooltip} fontSize="md">
                         <Link href={data?.data?.mapUri} isExternal>
                             <IconButton
                                 aria-label="Karte in neuem Tab öffnen"
@@ -41,12 +51,17 @@ export function MapCard() {
                 </Flex>
             ) : (
                 data && (
-                    <Box
-                        as="iframe"
-                        src={data.data.mapUri}
-                        w="100%"
-                        h="265px"
-                    />
+                    <Tooltip label={openMapInNewTabTooltip} fontSize="md">
+                        <LinkBox>
+                            <Box
+                                as="iframe"
+                                src={data.data.mapPreviewUri}
+                                w="100%"
+                                h="265px"
+                            />
+                            <LinkOverlay href={data?.data?.mapUri} isExternal />
+                        </LinkBox>
+                    </Tooltip>
                 )
             )}
         </Card>

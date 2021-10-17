@@ -11,7 +11,11 @@ namespace WhitelistCompanion.Configuration
         [RegularExpression(@"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$", ErrorMessage = "The {0} field must be a valid hostname")]
         public string ServerAddress { get; init; }
 
+        [Required]
         [SuppressMessage("Microsoft.Usage", "CA1056")]
         public string MapUri { get; init; }
+
+        [SuppressMessage("Microsoft.Usage", "CA1056")]
+        public string MapPreviewUri { get; init; }
     }
 }
